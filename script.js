@@ -2,9 +2,33 @@ document.addEventListener("DOMContentLoaded", () => {
   // вот это лучше вам не трогать, внутри тултипов оставил подсказки к выполнению задач
   enableTooltips();
 
+  // с этим обьектом вы будете работать
   const groupsData = {
     curator: "Глазунова",
     groups: [
+      {
+        id: "britsp251",
+        title: "БРИЦП251",
+        students: [
+          { name: "Абеленцев Марк" },
+          { name: "Бородин Александр" },
+          { name: "Казазян Арина" },
+          { name: "Карпив Полина" },
+          { name: "Куренков Всеволод" },
+          { name: "Ли Вадим" },
+          { name: "Морунов Пётр" },
+          { name: "Мосоровчук Анна" },
+          { name: "Нечаев Валерий" },
+          { name: "Николенко Софья" },
+          { name: "Новикова Полина" },
+          { name: "Олейник София" },
+          { name: "Саблина Мария" },
+          { name: "Смирнов Илья" },
+          { name: "Смирнов Макар" },
+          { name: "Тищенко Глафира" },
+          { name: "Эверглен Мелани" },
+        ],
+      },
       {
         id: "britsp252",
         title: "БРИЦП252",
@@ -29,31 +53,25 @@ document.addEventListener("DOMContentLoaded", () => {
           { name: "Этука Александр" },
         ],
       },
-      {
-        id: "britsp251",
-        title: "БРИЦП251",
-        students: [
-          { name: "Абеленцев Марк" },
-          { name: "Бородин Александр" },
-          { name: "Казазян Арина" },
-          { name: "Карпив Полина" },
-          { name: "Куренков Всеволод" },
-          { name: "Ли Вадим" },
-          { name: "Морунов Пётр" },
-          { name: "Мосоровчук Анна" },
-          { name: "Нечаев Валерий" },
-          { name: "Николенко Софья" },
-          { name: "Новикова Полина" },
-          { name: "Олейник София" },
-          { name: "Саблина Мария" },
-          { name: "Смирнов Илья" },
-          { name: "Смирнов Макар" },
-          { name: "Тищенко Глафира" },
-          { name: "Эверглен Мелани" },
-        ],
-      },
     ],
   };
+
+  //task35
+  btn_t35 = document.querySelector('[data-js="t35-show"]');
+  list_t35 = document.querySelector('[data-js="t35-list"]');
+  btn_t35.addEventListener("click", () => {
+    if (list_t35.children.length === 0) {
+      groupsData.groups.forEach(group => {
+        let li_t35 = document.createElement('li');
+        li_t35.textContent = group.title;
+        list_t35.appendChild(li_t35);
+      });
+      btn_t35.textContent = "Скрыть группы";
+    } else {
+      list_t35.innerHTML = '';
+      btn_t35.textContent = "Показать группы";
+    }
+  });
 
   //task36
   btns_t36 = document.querySelector('[data-js="t36-buttons"]');
@@ -151,4 +169,59 @@ document.addEventListener("DOMContentLoaded", () => {
       render(button_t40.dataset.groupId);
     });
   }
+
+  //task41
+  btns_t41 = document.querySelector('[data-js="t41-buttons"]');
+  randomBtn_t41 = document.querySelector('[data-js="t41-random"]');
+  countOut_t41 = document.querySelector('[data-js="t41-count"]');
+  randomOut_t41 = document.querySelector('[data-js="t41-random-out"]');
+  title_t41 = document.querySelector('[data-js="t41-title"]');
+  curator_t41 = document.querySelector('[data-js="t41-curator"]');
+  list_t41 = document.querySelector('[data-js="t41-list"]');
+
+  let currentGroupId_t41;
+  function getGroupById_t41(id) {
+    return groupsData.groups.find(group => group.id === id);
+  }
+
+  function renderList_t41(students) {
+    list_t41.innerHTML = '';
+    students.forEach(student => {
+      let li = document.createElement('li');
+      li.textContent = student.name;
+      list_t41.appendChild(li);
+    });
+  }
+
+  function renderCard_t41(group) {
+    title_t41.textContent = group.title;
+    curator_t41.textContent = 'Куратор: ' + groupsData.curator;
+    countOut_t41.textContent = 'Студентов: ' + group.students.length;
+    renderList_t41(group.students);
+  }
+
+
+  function render_t41(groupId) {
+    let group = getGroupById_t41(groupId);
+    currentGroupId_t41 = groupId;
+    renderCard_t41(group);
+    randomOut_t41.textContent = '';
+  }
+
+  for (const button of btns_t41.children) {
+    button.addEventListener('click', () => {
+      for (const btn of btns_t41.children) {
+        btn.classList.remove('is-active');
+      }
+      button.classList.add('is-active');
+      render_t41(button.dataset.groupId);
+    });
+  }
+
+  randomBtn_t41.addEventListener('click', () => {
+    let group_t41 = groupsData.groups.find(g => g.id === currentGroupId);
+    let randomIndex = Math.floor(Math.random() * group_t41.students.length);
+    let randomStudent = group_t41.students[randomIndex];
+    randomOut_t41.textContent = "Студент: " + randomStudent.name;
+  });
 });
